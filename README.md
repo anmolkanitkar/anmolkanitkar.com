@@ -104,11 +104,21 @@ Assets are **not** content-hashed, since there is no build step, so `_headers`
 caps CSS/JS at `max-age=3600` rather than a year. Raise that only if you add
 hashed filenames — otherwise a deploy strands visitors on stale CSS.
 
+> **Zone setting that silently overrides this file.** Caching → Configuration →
+> **Browser Cache TTL** must stay on **Respect Existing Headers**. Cloudflare
+> defaults it to 4 hours, and on that setting the edge rewrites the
+> `Cache-Control` on CSS/JS to `max-age=14400` no matter what `_headers` says —
+> quadrupling the stale-CSS window this file exists to bound. It is a zone-level
+> setting, so it is invisible from the repo; the `curl` check below is the only
+> way to notice it has drifted.
+
 Verify from the outside after any change:
 
 ```bash
 curl -sI https://anmolkanitkar.com | grep -i content-security-policy
-curl -s -o /dev/null -w '%{http_code}\n' https://anmolkanitkar.com/README.md  # 404
+curl -sI "https://anmolkanitkar.com/css/style.css?v=1" | grep -i cache-control  # max-age=3600
+curl -s -o /dev/null -w '%{http_code}\n' https://anmolkanitkar.com/README.md   # 404
+curl -sI https://www.anmolkanitkar.com | grep -iE '^HTTP|^location'            # 301 → apex
 ```
 
 ## Analytics
