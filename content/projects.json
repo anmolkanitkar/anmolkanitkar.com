@@ -1,0 +1,42 @@
+{
+  "_comment": [
+    "Source of truth for the projects grid on the homepage.",
+    "Edit this file, then run: python3 scripts/build_projects.py",
+    "",
+    "Per project:",
+    "  slug    — internal id, must be unique",
+    "  title   — card heading",
+    "  blurb   — one or two sentences: what it is and who it is for",
+    "  learned — what building it taught you. Admissions committees read this",
+    "            line more carefully than the tech tags. Be specific.",
+    "  tags    — technologies you would be happy to be questioned on",
+    "  links   — live and source are both optional; omit or null to hide",
+    "  repo    — 'owner/name' for a PUBLIC GitHub repo, or null.",
+    "            Stats are fetched only when this is set and the repo is public.",
+    "  stats   — filled in automatically. Do not edit by hand."
+  ],
+  "projects": [
+    {
+      "slug": "survibe",
+      "title": "Survibe",
+      "blurb": "A piano learning app for iPad that listens as you play and teaches in real time — no cables, no theory homework.",
+      "learned": "Shipping end to end: real-time audio, a design system, a strict content security policy, and a live domain on Cloudflare. The hard part was never the code, it was deciding what to leave out.",
+      "tags": [
+        "iPadOS",
+        "Swift",
+        "Web Audio API",
+        "Cloudflare Pages"
+      ],
+      "links": {
+        "live": "https://survibe.in",
+        "source": "https://github.com/anmolkanitkar/survibe-landing"
+      },
+      "repo": "anmolkanitkar/survibe-landing",
+      "stats": {
+        "stars": 0,
+        "language": "CSS",
+        "lastCommit": "2026-08-08T07:33:30Z"
+      }
+    }
+  ]
+}

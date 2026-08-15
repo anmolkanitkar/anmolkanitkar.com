@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Anmol Kanitkar — Computer science student &amp; software engineer</title>
+  <meta name="description" content="Computer science student building software that ships. Projects, code and writing by Anmol Kanitkar.">
+  <link rel="canonical" href="https://anmolkanitkar.com/">
+
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content="https://anmolkanitkar.com/">
+  <meta property="og:title" content="Anmol Kanitkar — Computer science student &amp; software engineer">
+  <meta property="og:description" content="Computer science student building software that ships. Projects, code and writing by Anmol Kanitkar.">
+  <meta property="og:image" content="https://anmolkanitkar.com/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta name="theme-color" content="#fdfdfc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
+
+  <!-- Inline SVG favicon as a data URI: no extra request, no binary asset to keep in sync. -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234f46e5'/><text x='16' y='22' font-family='ui-sans-serif,system-ui,sans-serif' font-size='15' font-weight='700' fill='%23fff' text-anchor='middle'>AK</text></svg>">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <!--
+    Cloudflare Web Analytics.
+    TODO: Cloudflare dashboard → Web Analytics → add anmolkanitkar.com → copy the
+    beacon token below and uncomment. The CSP in public/_headers already allows
+    static.cloudflareinsights.com, so nothing else needs to change.
+
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "REPLACE_WITH_BEACON_TOKEN"}'></script>
+  -->
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="logo" href="/" aria-label="Anmol Kanitkar — home">
+      <span class="logo__mark" aria-hidden="true">AK</span>
+      <span class="logo__word">Anmol Kanitkar</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+    </nav>
+
+    <a class="btn btn--sm" href="#contact">Get in touch</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ── Hero ─────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="wrap hero__inner">
+      <p class="eyebrow">Computer science student</p>
+
+      <h1 class="hero__title">
+        I build software that<br><span class="accent">actually ships.</span>
+      </h1>
+
+      <!--
+        TODO: replace this paragraph with your own words. Aim for two sentences.
+        The first says what you do and where you are; the second says what you
+        are looking for. Suggested shape:
+        "I'm a first-year CS student at [University], drawn to [systems / audio /
+        low-level programming]. I'm looking for [an internship / a Masters place
+        in X] where I can work on [the kind of problem you like]."
+      -->
+      <p class="hero__lede">
+        I'm an 18-year-old computer science student at
+        <mark class="todo">[University name]</mark>, working mostly in C, C++ and
+        Swift. I care about the unglamorous parts — tests, tooling, and code that
+        still makes sense six months later.
+      </p>
+
+      <div class="hero__actions">
+        <a class="btn" href="#projects">See my work</a>
+        <a class="btn btn--ghost" href="https://github.com/anmolkanitkar" rel="me noopener">GitHub</a>
+        <a class="btn btn--ghost" href="https://www.linkedin.com/in/anmol-kanitkar-83059a339/" rel="me noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── About ────────────────────────────────────────────── -->
+  <section class="section" id="about">
+    <div class="wrap section__grid">
+      <div class="section__head">
+        <h2 class="section__title">About</h2>
+      </div>
+
+      <div class="prose">
+        <!--
+          TODO: three or four sentences, in your own voice. What admissions
+          committees and hiring managers are actually reading for:
+            1. What you're studying and where.
+            2. What you've built, and what it taught you.
+            3. What you want to do next, specifically.
+          Be concrete. "I wrote an audio pipeline that runs in real time on an
+          iPad" beats "I am passionate about technology".
+        -->
+        <p>
+          I'm studying computer science at <mark class="todo">[University name]</mark>,
+          where I'm in my <mark class="todo">[year]</mark> year of a
+          <mark class="todo">[course title]</mark>, graduating in
+          <mark class="todo">[year]</mark>.
+        </p>
+        <p>
+          Most of what I know I learned by shipping. Building
+          <a href="#projects">Survibe</a> meant real-time audio, a design system, a
+          domain and a deploy pipeline — the whole path from an idea to something a
+          stranger can open on their iPad. My coursework repo is where I practise the
+          discipline side: CMake presets, GoogleTest, AddressSanitizer and a CI matrix,
+          because catching undefined behaviour in CI beats debugging it at 2am.
+        </p>
+        <p>
+          I'm looking for <mark class="todo">[a Masters place in X / an internship in Y]</mark>
+          — somewhere I can work on <mark class="todo">[the kind of problem you want]</mark>
+          alongside people who'll tell me when I'm wrong.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Skills ───────────────────────────────────────────── -->
+  <section class="section section--alt" id="skills">
+    <div class="wrap section__grid">
+      <div class="section__head">
+        <h2 class="section__title">Skills</h2>
+        <p class="section__note">Things I've actually used to build something, not a wishlist.</p>
+      </div>
+
+      <div class="skills">
+        <!-- TODO: prune anything here you wouldn't be happy to be questioned on in an interview. -->
+        <div class="skills__group">
+          <h3 class="skills__label">Languages</h3>
+          <ul class="tags">
+            <li class="tag">C</li>
+            <li class="tag">C++20</li>
+            <li class="tag">Swift</li>
+            <li class="tag">JavaScript</li>
+            <li class="tag">Python</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <h3 class="skills__label">Tooling</h3>
+          <ul class="tags">
+            <li class="tag">CMake</li>
+            <li class="tag">Ninja</li>
+            <li class="tag">Git</li>
+            <li class="tag">GitHub Actions</li>
+            <li class="tag">LLDB</li>
+            <li class="tag">clang-tidy</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <h3 class="skills__label">Practice</h3>
+          <ul class="tags">
+            <li class="tag">GoogleTest</li>
+            <li class="tag">AddressSanitizer</li>
+            <li class="tag">UBSan</li>
+            <li class="tag">CI/CD</li>
+            <li class="tag">Cloudflare Pages</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Projects ─────────────────────────────────────────── -->
+  <section class="section" id="projects">
+    <div class="wrap">
+      <div class="section__head section__head--wide">
+        <h2 class="section__title">Projects</h2>
+        <p class="section__note">
+          Repository stats refresh automatically. Everything else is written by hand.
+        </p>
+      </div>
+
+      <!--
+        Everything between the markers is generated by scripts/build_projects.py
+        from content/projects.json. Edit that file, not this block — anything
+        written here by hand is overwritten on the next run.
+      -->
+      <!-- projects:start -->
+        <ul class="cards">
+        <li class="card">
+          <div class="card__head">
+            <h3 class="card__title">Survibe</h3>
+          </div>
+          <p class="card__blurb">A piano learning app for iPad that listens as you play and teaches in real time — no cables, no theory homework.</p>
+          <div class="card__learned">
+            <strong>What I learned</strong>
+            Shipping end to end: real-time audio, a design system, a strict content security policy, and a live domain on Cloudflare. The hard part was never the code, it was deciding what to leave out.
+          </div>
+          <ul class="tags">
+            <li class="tag">iPadOS</li>
+            <li class="tag">Swift</li>
+            <li class="tag">Web Audio API</li>
+            <li class="tag">Cloudflare Pages</li>
+          </ul>
+          <div class="card__foot">
+            <a class="card__link" href="https://survibe.in" rel="noopener">Visit site</a>
+            <a class="card__link" href="https://github.com/anmolkanitkar/survibe-landing" rel="noopener">Source</a>
+            <div class="card__stats">
+              <span>CSS</span>
+              <span>Updated Aug 2026</span>
+            </div>
+          </div>
+        </li>
+        </ul>
+      <!-- projects:end -->
+    </div>
+  </section>
+
+  <!-- ── Contact ──────────────────────────────────────────── -->
+  <section class="section section--alt" id="contact">
+    <div class="wrap contact">
+      <h2 class="section__title">Get in touch</h2>
+      <p class="contact__lede">
+        I'm open to internships, Masters supervision conversations, and anyone who
+        wants to talk about audio software or C++.
+      </p>
+      <div class="hero__actions">
+        <a class="btn" href="https://www.linkedin.com/in/anmol-kanitkar-83059a339/" rel="me noopener">LinkedIn</a>
+        <a class="btn btn--ghost" href="https://github.com/anmolkanitkar" rel="me noopener">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <p>&copy; <span id="year">2026</span> Anmol Kanitkar</p>
+    <p class="footer__meta">
+      Built without a framework.
+      <a href="https://github.com/anmolkanitkar/anmolkanitkar.com" rel="noopener">Source</a>.
+    </p>
+  </div>
+</footer>
+
+<script src="js/main.js" defer></script>
+
+<!--
+  JSON-LD tells search engines that the query "Anmol Kanitkar" and this site are
+  the same entity — the entire point of owning a personal domain. It's a data
+  block rather than executable script, so `script-src 'self'` does not block it.
+  TODO: fill in alumniOf once the university placeholders above are filled in.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Anmol Kanitkar",
+  "url": "https://anmolkanitkar.com/",
+  "jobTitle": "Computer science student",
+  "sameAs": [
+    "https://github.com/anmolkanitkar",
+    "https://www.linkedin.com/in/anmol-kanitkar-83059a339/"
+  ]
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+name: Refresh project stats
+
+# Keeps the repository stats on the projects grid current without touching the
+# hand-written copy around them.
+#
+# Why the commit-only-if-changed guard matters: every commit here lands on main,
+# and every push to main triggers a Cloudflare Pages deploy. Committing
+# unconditionally would mean a pointless deploy and a junk commit every week, in
+# a repository someone reviewing your work may well read the history of.
+on:
+  schedule:
+    # 06:00 UTC every Monday. Stats do not move fast enough to justify daily.
+    - cron: "0 6 * * 1"
+  push:
+    branches: [main]
+    paths:
+      - "content/projects.json"
+      - "scripts/build_projects.py"
+  workflow_dispatch:
+
+# Least privilege: the job needs to push a commit back, and nothing else.
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-stats
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # No setup-python step: ubuntu-latest ships a python3 new enough for the
+      # standard library this script uses, and the script has no dependencies.
+      - name: Render projects grid
+        env:
+          # Raises the GitHub API rate limit from 60/hour to 5000/hour. Scoped
+          # to this repository, so it can read any public repo but no private one.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/build_projects.py
+
+      - name: Commit if anything changed
+        run: |
+          if git diff --quiet; then
+            echo "No stat changes — nothing to commit."
+            exit 0
+          fi
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/projects.json public/index.html
+          git commit -m "Refresh project stats
+
+          Automated: repository stars, language and last-commit dates pulled
+          from the GitHub API by scripts/build_projects.py."
+          git push

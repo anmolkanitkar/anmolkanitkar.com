@@ -1,0 +1,530 @@
+/* ==========================================================================
+   anmolkanitkar.com
+   Single stylesheet, no preprocessor. Order: tokens → reset → primitives →
+   layout → components → responsive.
+   ========================================================================== */
+
+/* --- Design tokens -------------------------------------------------------
+   Light is the default; the dark palette is swapped in via prefers-color-scheme
+   below. Every colour used anywhere in this file comes from a variable, so the
+   dark override is a single block rather than a parallel stylesheet.
+   -------------------------------------------------------------------------- */
+:root {
+    --bg:            #fdfdfc;
+    --bg-alt:        #f4f4f2;
+    --surface:       #ffffff;
+    --text:          #16181d;
+    --text-muted:    #5b6270;
+    --border:        #e3e5ea;
+    --accent:        #4f46e5;
+    --accent-hover:  #4338ca;
+    --accent-soft:   #eef2ff;
+    --on-accent:     #ffffff;
+    --todo-bg:       #fff2a8;
+    --todo-text:     #4a3c00;
+
+    --shadow-sm: 0 1px 2px rgb(16 18 22 / 6%);
+    --shadow-md: 0 4px 16px rgb(16 18 22 / 8%);
+
+    --radius:    12px;
+    --radius-sm: 7px;
+
+    --wrap:      1080px;
+    --gutter:    24px;
+
+    --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+            "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+            "Liberation Mono", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg:           #101216;
+        --bg-alt:       #16191f;
+        --surface:      #191d24;
+        --text:         #e8eaef;
+        --text-muted:   #9aa3b2;
+        --border:       #272c35;
+        --accent:       #8b8cf8;
+        --accent-hover: #a5a6fb;
+        --accent-soft:  #1e2130;
+        --on-accent:    #14161c;
+        --todo-bg:      #5c4a00;
+        --todo-text:    #ffe9a3;
+
+        --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+        --shadow-md: 0 4px 16px rgb(0 0 0 / 45%);
+    }
+}
+
+/* --- Reset ---------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body, h1, h2, h3, p, ul, figure {
+    margin: 0;
+    padding: 0;
+}
+
+ul { list-style: none; }
+
+html {
+    scroll-behavior: smooth;
+    /* Anchor links land below the sticky header instead of underneath it. */
+    scroll-padding-top: 84px;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+a:hover { color: var(--accent-hover); }
+
+/* A visible focus ring is the whole reason keyboard navigation is usable.
+   :focus-visible keeps it off for mouse clicks without hiding it from tab users. */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+
+/* --- Layout primitives ---------------------------------------------------- */
+.wrap {
+    width: 100%;
+    max-width: var(--wrap);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    padding: 12px 18px;
+    background: var(--accent);
+    color: var(--on-accent);
+    border-radius: 0 0 var(--radius-sm) 0;
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    left: 0;
+}
+
+/* --- Header --------------------------------------------------------------- */
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(160%) blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+/* Toggled by js/main.js once the page is scrolled — separates the bar from
+   content without drawing a permanent line at rest. */
+.nav.is-stuck {
+    border-bottom-color: var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+.nav__inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-height: 68px;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    margin-right: auto;
+}
+
+.logo__mark {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.nav__links {
+    display: flex;
+    gap: 26px;
+}
+
+.nav__links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.nav__links a:hover { color: var(--text); }
+
+/* --- Buttons -------------------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 20px;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 15px;
+    font-weight: 550;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.btn:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: var(--on-accent);
+}
+
+.btn--ghost {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.btn--ghost:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.btn--sm {
+    padding: 8px 15px;
+    font-size: 14px;
+}
+
+/* --- Hero ----------------------------------------------------------------- */
+.hero {
+    padding: clamp(56px, 10vw, 108px) 0 clamp(48px, 8vw, 84px);
+}
+
+.hero__inner { max-width: 760px; }
+
+.eyebrow {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+}
+
+.hero__title {
+    font-size: clamp(2.3rem, 6.2vw, 3.85rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    font-weight: 700;
+}
+
+.accent { color: var(--accent); }
+
+.hero__lede {
+    margin-top: 22px;
+    font-size: clamp(1.02rem, 2.1vw, 1.16rem);
+    color: var(--text-muted);
+    max-width: 60ch;
+}
+
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+/* --- Sections ------------------------------------------------------------- */
+.section {
+    padding: clamp(48px, 8vw, 88px) 0;
+    border-top: 1px solid var(--border);
+}
+
+.section--alt { background: var(--bg-alt); }
+
+.section__grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: clamp(24px, 5vw, 56px);
+    align-items: start;
+}
+
+.section__title {
+    font-size: 1.28rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+}
+
+.section__note {
+    margin-top: 8px;
+    font-size: 14.5px;
+    color: var(--text-muted);
+}
+
+.section__head--wide {
+    max-width: 60ch;
+    margin-bottom: 30px;
+}
+
+.prose { max-width: 66ch; }
+.prose p + p { margin-top: 16px; }
+.prose p { color: var(--text-muted); }
+
+/* Unfilled placeholder content. Deliberately loud — anything still highlighted
+   when you look at the page is something that must not go live. */
+.todo {
+    background: var(--todo-bg);
+    color: var(--todo-text);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 550;
+}
+
+/* --- Skills --------------------------------------------------------------- */
+.skills {
+    display: grid;
+    gap: 26px;
+}
+
+.skills__label {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 11px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    padding: 5px 11px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* --- Project cards -------------------------------------------------------- */
+.cards {
+    display: grid;
+    /* auto-FILL, not auto-fit: auto-fit collapses the empty tracks, so a single
+       card would stretch the full width of the page and look broken. auto-fill
+       keeps the tracks, so one card occupies one column and the grid fills in
+       naturally as projects are added. */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: 26px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.card:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.card__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.card__title {
+    font-size: 1.18rem;
+    font-weight: 650;
+    letter-spacing: -0.012em;
+}
+
+.card__blurb { color: var(--text-muted); }
+
+.card__learned {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+    font-size: 15px;
+    color: var(--text-muted);
+}
+
+.card__learned strong {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.card .tags { margin-top: 18px; }
+
+.card__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    /* Pins the link row to the bottom so cards of different heights line up. */
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.card__link {
+    font-size: 14.5px;
+    font-weight: 550;
+    text-decoration: none;
+}
+
+.card__link:hover { text-decoration: underline; }
+
+.card__link::after {
+    content: " \2192";
+}
+
+/* Auto-refreshed repository metadata. Muted because it is supporting evidence,
+   not the headline. */
+.card__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text-muted);
+}
+
+/* --- Contact -------------------------------------------------------------- */
+.contact { max-width: 60ch; }
+
+.contact__lede {
+    margin-top: 12px;
+    color: var(--text-muted);
+}
+
+/* --- Footer --------------------------------------------------------------- */
+.footer {
+    border-top: 1px solid var(--border);
+    padding: 30px 0;
+    font-size: 14.5px;
+    color: var(--text-muted);
+}
+
+.footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* --- Responsive ----------------------------------------------------------- */
+@media (max-width: 720px) {
+    .section__grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* The nav links are the first thing to go: the section anchors are all
+       reachable by scrolling, and the name plus CTA still fit one line. */
+    .nav__links { display: none; }
+
+    .cards { grid-template-columns: 1fr; }
+
+    .card__stats {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .logo__word { font-size: 15px; }
+    .hero__actions .btn { flex: 1 1 auto; }
+}
+
+/* --- Reduced motion ------------------------------------------------------- */
+/* Respecting this is not decoration: vestibular disorders make parallax and
+   large transforms genuinely unpleasant. Kill motion, keep every state change. */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .card:hover { transform: none; }
+}
+
+/* --- Print ---------------------------------------------------------------- */
+/* Someone will inevitably print this page or save it as a PDF to attach to an
+   application. Make that version readable instead of a wall of dark ink. */
+@media print {
+    .nav, .skip-link, .hero__actions, #contact .hero__actions { display: none; }
+
+    body {
+        background: #fff;
+        color: #000;
+        font-size: 12pt;
+    }
+
+    .card {
+        break-inside: avoid;
+        border: 1px solid #999;
+    }
+
+    a::after {
+        content: " (" attr(href) ")";
+        font-size: 9pt;
+        color: #555;
+    }
+}
