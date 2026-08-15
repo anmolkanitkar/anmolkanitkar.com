@@ -29,13 +29,13 @@
       ],
       "links": {
         "live": "https://survibe.in",
-        "source": "https://github.com/anmolkanitkar/survibe-landing"
+        "source": null
       },
-      "repo": "anmolkanitkar/survibe-landing",
+      "repo": null,
       "stats": {
-        "stars": 0,
-        "language": "CSS",
-        "lastCommit": "2026-08-08T07:33:30Z"
+        "stars": null,
+        "language": null,
+        "lastCommit": null
       }
     }
   ]
