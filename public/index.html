@@ -26,13 +26,16 @@
   <link rel="stylesheet" href="css/style.css">
 
   <!--
-    Cloudflare Web Analytics.
-    TODO: Cloudflare dashboard → Web Analytics → add anmolkanitkar.com → copy the
-    beacon token below and uncomment. The CSP in public/_headers already allows
-    static.cloudflareinsights.com, so nothing else needs to change.
+    Analytics: Cloudflare Web Analytics, enabled on the zone with "automatic
+    setup". There is deliberately no <script> tag here — Cloudflare injects the
+    beacon at the edge, so the token never has to live in this repo.
 
-  <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon='{"token": "REPLACE_WITH_BEACON_TOKEN"}'></script>
+    It is cookieless and collects no personal data, which is why this site needs
+    neither a consent banner nor a privacy policy. That stays true only as long
+    as nothing else is added; the CSP in public/_headers already permits
+    static.cloudflareinsights.com and cloudflareinsights.com, and nothing else.
+
+    To turn it off: Cloudflare dashboard → Analytics → Web Analytics.
   -->
 </head>
 <body>
