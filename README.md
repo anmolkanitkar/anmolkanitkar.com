@@ -138,9 +138,13 @@ transform. Keep these intact when editing.
 
 ## Before this goes live
 
-- [ ] Fill in every `<mark class="todo">` placeholder in `index.html` —
-      university, course, year, and what you're looking for. They render as
-      loud yellow highlights specifically so they cannot be missed.
-- [ ] Add `public/assets/img/og.png` (1200×630) — the link preview card.
-- [ ] Paste the Cloudflare Web Analytics token and uncomment the beacon tag.
-- [ ] Fill in `alumniOf` in the JSON-LD block once the university is decided.
+- [x] Fill in every `<mark class="todo">` placeholder in `index.html`. None
+      remain. The `.todo` style is kept in the stylesheet on purpose — wrap any
+      future unfinished copy in `<mark class="todo">` and it renders as a loud
+      yellow highlight that cannot be shipped by accident.
+- [x] Fill in `alumniOf` in the JSON-LD block.
+- [x] Analytics — enabled on the zone, beacon injected at the edge, no token in
+      this repo.
+- [ ] Add `public/assets/img/og.png` (1200×630). The `og:image` meta tag already
+      points at it, so until the file exists, links shared to LinkedIn or
+      WhatsApp preview with a broken image rather than no image.
