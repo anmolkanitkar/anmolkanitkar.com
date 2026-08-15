@@ -5,26 +5,34 @@
    ========================================================================== */
 
 /* --- Design tokens -------------------------------------------------------
-   Light is the default; the dark palette is swapped in via prefers-color-scheme
-   below. Every colour used anywhere in this file comes from a variable, so the
-   dark override is a single block rather than a parallel stylesheet.
+   Dark, always. Deliberately NOT behind prefers-color-scheme: an earlier
+   version shipped a light palette as the default and a dark one as the media
+   query, which meant the site turned white for anyone whose OS was in light
+   mode. A brand look that flips depending on the visitor's system setting is
+   not a brand look, so this commits to one.
+
+   The palette is lifted from survibe.in so the two sites read as the same
+   hand — same ink, same ivory, same gold. Every colour below is a variable,
+   so retheming is this block and nothing else.
    -------------------------------------------------------------------------- */
 :root {
-    --bg:            #fdfdfc;
-    --bg-alt:        #f4f4f2;
-    --surface:       #ffffff;
-    --text:          #16181d;
-    --text-muted:    #5b6270;
-    --border:        #e3e5ea;
-    --accent:        #4f46e5;
-    --accent-hover:  #4338ca;
-    --accent-soft:   #eef2ff;
-    --on-accent:     #ffffff;
-    --todo-bg:       #fff2a8;
-    --todo-text:     #4a3c00;
+    --bg:            #0c0c0f;  /* survibe --ink   */
+    --bg-alt:        #131319;  /* survibe --ink-2 */
+    --surface:       #1b1b23;  /* survibe --ink-3 */
+    --text:          #f4efe6;  /* survibe --ivory */
+    --text-muted:    #9d9aa7;  /* survibe --muted */
+    --border:        #2a2a35;  /* survibe --line  */
+    --accent:        #e8b44a;
+    --accent-hover:  #f0cd82;
+    --accent-soft:   rgb(232 180 74 / 14%);
+    /* Ink on gold, not white: white on #e8b44a is roughly 1.9:1 and fails
+       WCAG outright, while this pairing clears 9:1. */
+    --on-accent:     #0c0c0f;
+    --todo-bg:       #5c4a00;
+    --todo-text:     #ffe9a3;
 
-    --shadow-sm: 0 1px 2px rgb(16 18 22 / 6%);
-    --shadow-md: 0 4px 16px rgb(16 18 22 / 8%);
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 45%);
+    --shadow-md: 0 4px 18px rgb(0 0 0 / 55%);
 
     --radius:    12px;
     --radius-sm: 7px;
@@ -38,25 +46,9 @@
             "Liberation Mono", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg:           #101216;
-        --bg-alt:       #16191f;
-        --surface:      #191d24;
-        --text:         #e8eaef;
-        --text-muted:   #9aa3b2;
-        --border:       #272c35;
-        --accent:       #8b8cf8;
-        --accent-hover: #a5a6fb;
-        --accent-soft:  #1e2130;
-        --on-accent:    #14161c;
-        --todo-bg:      #5c4a00;
-        --todo-text:    #ffe9a3;
-
-        --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
-        --shadow-md: 0 4px 16px rgb(0 0 0 / 45%);
-    }
-}
+/* Tells the browser the page is dark, so form controls, scrollbars and the
+   space beyond the page all render dark rather than as white slivers. */
+:root { color-scheme: dark; }
 
 /* --- Reset ---------------------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
