@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Setu — startup-friendly public procurement</title>
+  <meta name="description" content="An interactive prototype of a public procurement route that lets government departments identify, pilot, procure and scale solutions from startups. Built for the Smart India Hackathon.">
+  <link rel="canonical" href="https://anmolkanitkar.com/projects/setu/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://anmolkanitkar.com/projects/setu/">
+  <meta property="og:title" content="Setu — startup-friendly public procurement">
+  <meta property="og:description" content="An interactive prototype of a public procurement route that lets government departments identify, pilot, procure and scale solutions from startups. Built for the Smart India Hackathon.">
+  <!-- No og:image yet. Pointing at a file that does not exist previews worse
+       than pointing at nothing at all. -->
+
+  <!-- Unlike the rest of the site, this page follows the visitor's theme, so the
+       browser chrome should follow it too. -->
+  <meta name="theme-color" content="#f1f4f8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b111d" media="(prefers-color-scheme: dark)">
+
+  <!-- Inline SVG favicon as a data URI: no extra request, no binary asset. -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2314396e'/><text x='16' y='23' font-family='ui-sans-serif,system-ui,sans-serif' font-size='17' font-weight='700' fill='%23ffffff' text-anchor='middle'>S</text></svg>">
+
+  <!--
+    No inline <style> and no inline <script> anywhere on this page, and no
+    third-party origin: the site is served under
+    `default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'`
+    (see public/_headers), which blocks all three. The prototype uses a system
+    font stack for the same reason — it makes no font request at all.
+  -->
+  <link rel="stylesheet" href="setu.css">
+  <script src="setu.js" defer></script>
+</head>
+<body>
+
+<a class="skip" href="#view">Skip to content</a>
+<div class="app">
+  <aside class="rail" aria-label="Roles and steps">
+    <div class="brandmark">
+      <div class="emblem">से</div>
+      <div><b>Setu</b><span>Procurement for startups</span></div>
+    </div>
+
+    <div>
+      <div class="grouplab">Who is using it</div>
+      <div class="roles" id="roles"></div>
+    </div>
+
+    <div>
+      <div class="grouplab" id="navlab"></div>
+      <nav id="nav" aria-label="Steps"></nav>
+    </div>
+
+    <div class="railfoot">
+      <button class="btn pri" type="button" id="tourstart">Start guided demo</button>
+      <button class="btn" type="button" id="themebtn">Switch theme</button>
+      <p class="railnote">Prototype · Smart India Hackathon</p>
+      <a class="homelink" href="/">&#8592; anmolkanitkar.com</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="crumb" id="crumb"></div>
+    <main class="content" id="view" tabindex="-1"></main>
+  </div>
+</div>
+
+<div class="tourbar" id="tourbar" hidden>
+  <div class="in">
+    <div>
+      <div class="stepno" id="tourno"></div>
+      <div class="dots" id="tourdots"></div>
+    </div>
+    <div><div class="who" id="tourwho"></div><h3 id="tourtitle"></h3><p id="tourtext"></p></div>
+    <div class="ctrls">
+      <button class="btn" type="button" id="tourback">Back</button>
+      <button class="btn pri" type="button" id="tournext">Next</button>
+      <button class="btn ghost" type="button" id="tourexit">Exit</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
