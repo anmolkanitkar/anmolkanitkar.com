@@ -36,3 +36,15 @@
   Cache-Control: public, max-age=3600
 /assets/*
   Cache-Control: public, max-age=3600
+
+# Project pages live at their own paths, so the /css/* and /js/* rules above do
+# not reach them. Without these lines the files below ship with no Cache-Control
+# at all and the edge falls back to its own default.
+/projects/setu/
+  Cache-Control: public, max-age=0, must-revalidate
+/projects/setu/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+/projects/setu/setu.css
+  Cache-Control: public, max-age=3600
+/projects/setu/setu.js
+  Cache-Control: public, max-age=3600

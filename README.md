@@ -19,6 +19,7 @@ anmolkanitkar.com/
 │   ├── css/style.css
 │   ├── js/main.js
 │   ├── assets/img/
+│   ├── projects/setu/           ← a project page (see "Project pages")
 │   ├── robots.txt
 │   ├── sitemap.xml
 │   └── _headers                 ← Cloudflare Pages security + cache headers
@@ -77,6 +78,55 @@ network access at all.
 `.github/workflows/refresh-stats.yml` runs the same script weekly and commits
 **only if the output actually changed**, so the history stays free of empty
 "refresh" commits.
+
+## Project pages
+
+Some projects need more than a card — a live demo you can click through. Those live
+under `public/projects/<slug>/` and are linked from the grid via `links.live`.
+
+| Page | Path |
+|---|---|
+| Setu — startup-friendly public procurement (Smart India Hackathon) | `/projects/setu/` |
+
+**A project page is bound by the same CSP as the rest of the site.** That is the one
+rule to remember, because nothing warns you until it is deployed:
+
+- No inline `<style>` block, no inline `<script>` block, and **no `style="..."`
+  attributes** — `style-src 'self'` blocks attributes in markup too, including markup
+  that JavaScript inserts with `innerHTML`.
+- No third-party origin. `/projects/setu/` uses a system font stack rather than a web
+  font for exactly this reason: `font-src 'self'` would block Google Fonts, and
+  self-hosting the files would mean committing binaries for one page.
+- Genuinely dynamic styling goes through the CSSOM (`el.style.width = ...`), which CSP
+  does not intercept. Setu's progress bars render as `<i data-w="84">` and get their
+  width applied after each render.
+
+Add a `_headers` block for any new page — the `/css/*` and `/js/*` cache rules are
+top-level globs and will not reach `/projects/<slug>/`.
+
+### Checking a page against the real CSP before you deploy
+
+`python3 -m http.server` does not apply `_headers`, so violations stay invisible
+locally. Serve with the header attached instead:
+
+```python
+# csp_serve.py — run from public/
+import http.server, functools
+CSP = ("default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; "
+       "style-src 'self'; img-src 'self' data:; font-src 'self'; "
+       "connect-src 'self' https://cloudflareinsights.com; object-src 'none'; "
+       "base-uri 'self'; form-action 'none'; frame-ancestors 'none'")
+
+class H(http.server.SimpleHTTPRequestHandler):
+    def end_headers(self):
+        self.send_header("Content-Security-Policy", CSP)
+        super().end_headers()
+
+http.server.HTTPServer(("127.0.0.1", 8000), H).serve_forever()
+```
+
+Open the page and read the console. A clean console here means a clean console on the
+edge; anything red is the policy doing its job.
 
 ## Deploying
 

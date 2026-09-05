@@ -17,6 +17,28 @@
   ],
   "projects": [
     {
+      "slug": "setu",
+      "title": "Setu",
+      "blurb": "A working prototype of a public procurement route where a government department posts a problem, an independent evaluator picks a startup, and a paid pilot converts into a contract. Built for the Smart India Hackathon problem statement on startup-friendly procurement.",
+      "learned": "Separating the roles was the decision worth defending: the department that writes the problem does not choose the winner, an evaluator does, and every rejection carries a written reason the applicant can read. The constraint that shaped the build was this site's content security policy — no inline styles or scripts are allowed, so the whole thing is external CSS and JS with the one genuinely dynamic value set through the CSSOM instead.",
+      "tags": [
+        "Vanilla JS",
+        "CSS",
+        "Content Security Policy",
+        "Cloudflare Pages"
+      ],
+      "links": {
+        "live": "/projects/setu/",
+        "source": "https://github.com/anmolkanitkar/anmolkanitkar.com/tree/main/public/projects/setu"
+      },
+      "repo": null,
+      "stats": {
+        "stars": null,
+        "language": null,
+        "lastCommit": null
+      }
+    },
+    {
       "slug": "survibe",
       "title": "Survibe",
       "blurb": "A piano learning app for iPad that listens as you play and teaches in real time — no cables, no theory homework.",
