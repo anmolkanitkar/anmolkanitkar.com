@@ -10,7 +10,8 @@
     "  learned — what building it taught you. Admissions committees read this",
     "            line more carefully than the tech tags. Be specific.",
     "  tags    — technologies you would be happy to be questioned on",
-    "  links   — live and source are both optional; omit or null to hide",
+    "  links   — live, source, doc are all optional; omit or null to hide.",
+    "            doc is a third link (a write-up or deck); docLabel names it.",
     "  repo    — 'owner/name' for a PUBLIC GitHub repo, or null.",
     "            Stats are fetched only when this is set and the repo is public.",
     "  stats   — filled in automatically. Do not edit by hand."
@@ -29,7 +30,9 @@
       ],
       "links": {
         "live": "/projects/setu/",
-        "source": "https://github.com/anmolkanitkar/anmolkanitkar.com/tree/main/public/projects/setu"
+        "source": "https://github.com/anmolkanitkar/anmolkanitkar.com/tree/main/public/projects/setu",
+        "doc": "/projects/setu/setu-sih-2026.pdf",
+        "docLabel": "Submission deck (PDF)"
       },
       "repo": null,
       "stats": {

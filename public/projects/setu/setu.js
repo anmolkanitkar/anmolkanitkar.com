@@ -281,6 +281,7 @@ function landing(){
     '<div class="land-cta">' +
       '<button class="btn pri big" type="button" id="landdemo">Take the guided demo · 11 steps</button>' +
       '<button class="btn big" type="button" id="landenter">Explore on my own</button>' +
+      '<a class="btn big landdeck" href="setu-sih-2026.pdf">Submission deck · PDF</a>' +
     '</div>' +
     '<p class="land-foot">Prototype with representative data. No real department, startup or contract is depicted.</p>' +
   '</div>';

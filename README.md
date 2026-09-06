@@ -19,7 +19,7 @@ anmolkanitkar.com/
 │   ├── css/style.css
 │   ├── js/main.js
 │   ├── assets/img/
-│   ├── projects/setu/           ← a project page (see "Project pages")
+│   ├── projects/setu/           ← a project page + its deck (see "Project pages")
 │   ├── robots.txt
 │   ├── sitemap.xml
 │   └── _headers                 ← Cloudflare Pages security + cache headers
@@ -50,7 +50,8 @@ third-party, check the console on the deployed preview URL before merging.
 
 ## Adding a project
 
-1. Add an entry to `content/projects.json`.
+1. Add an entry to `content/projects.json`. `links` takes `live`, `source` and an
+   optional `doc` (a write-up or deck) whose label comes from `docLabel`.
 2. Run the generator:
 
    ```bash
@@ -87,6 +88,16 @@ under `public/projects/<slug>/` and are linked from the grid via `links.live`.
 | Page | Path |
 |---|---|
 | Setu — startup-friendly public procurement (Smart India Hackathon) | `/projects/setu/` |
+| Setu submission deck | `/projects/setu/setu-sih-2026.pdf` |
+
+A page may ship a companion document. The deck above is generated from a
+PowerPoint source that is **not** in this repo — regenerate it with
+`libreoffice --headless --convert-to pdf` and replace the file in place. Give any
+replacement the same filename so the links do not have to change, and remember
+`_headers` caches it for a day: rename it if you need a change visible sooner.
+
+Do not embed a PDF with `<embed>` or `<object>` — `object-src 'none'` in the CSP
+blocks both. Link to it.
 
 **A project page is bound by the same CSP as the rest of the site.** That is the one
 rule to remember, because nothing warns you until it is deployed:

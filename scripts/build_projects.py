@@ -166,7 +166,7 @@ def render_card(project: dict) -> str:
     if updated:
         stat_parts.append(escape(updated))
 
-    if links.get("live") or links.get("source") or stat_parts:
+    if links.get("live") or links.get("source") or links.get("doc") or stat_parts:
         lines.append(f'{INDENT}    <div class="card__foot">')
         if links.get("live"):
             lines.append(
@@ -177,6 +177,13 @@ def render_card(project: dict) -> str:
             lines.append(
                 f'{INDENT}      <a class="card__link" href="{escape(links["source"], quote=True)}"'
                 f' rel="noopener">Source</a>'
+            )
+        # A third, optional link for a write-up or deck. Kept generic rather than
+        # named "PDF" so the label can change without touching the schema.
+        if links.get("doc"):
+            lines.append(
+                f'{INDENT}      <a class="card__link" href="{escape(links["doc"], quote=True)}"'
+                f' rel="noopener">{escape(links.get("docLabel") or "Read more")}</a>'
             )
         if stat_parts:
             lines.append(f'{INDENT}      <div class="card__stats">')

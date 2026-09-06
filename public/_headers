@@ -48,3 +48,9 @@
   Cache-Control: public, max-age=3600
 /projects/setu/setu.js
   Cache-Control: public, max-age=3600
+# The deck is a versioned artefact, not a page: it changes rarely and is fine to
+# cache for a day. Content-Disposition is deliberately absent - a judge following
+# this link should get the deck in the browser's viewer, not a download prompt.
+/projects/setu/setu-sih-2026.pdf
+  Cache-Control: public, max-age=86400
+  X-Robots-Tag: index, follow
