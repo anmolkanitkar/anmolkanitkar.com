@@ -9,3 +9,9 @@
 # Python (the build script has no dependencies, but running it leaves these)
 __pycache__/
 *.pyc
+
+# The Claude desktop app writes files it hands back into this folder. They are
+# working artefacts (logo drafts, previews), not part of the site, and they sit
+# outside public/ so they are never deployed - but untracked they clutter every
+# `git status`. Delete the folder whenever you like; nothing depends on it.
+Claude outputs/
