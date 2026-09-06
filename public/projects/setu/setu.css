@@ -269,20 +269,81 @@ input:focus,select:focus,textarea:focus{outline:3px solid var(--focus);outline-o
 .focus-ring{outline:3px solid var(--accent);outline-offset:4px;border-radius:var(--r)}
 
 @media (max-width:1000px){.split,.big3,.f2{grid-template-columns:minmax(0,1fr)}}
+/* ---------- landing ---------- */
+body.landing .rail,
+body.landing .crumb{display:none}
+/* The rail is a grid column; hiding it would otherwise leave .main placed in
+   that 264px track and squeeze the whole landing page into it. */
+body.landing .app{grid-template-columns:minmax(0,1fr)}
+body.landing .content{max-width:820px;margin:0 auto;padding-top:44px}
+.land-eyebrow{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.land-h1{font-size:38px;font-weight:700;line-height:1.12;margin:10px 0 0}
+.land-lede{font-size:18px;line-height:1.55;color:var(--ink-2);margin-top:16px;
+  border-left:4px solid var(--brand);padding-left:18px}
+.land-sub{font-size:15.5px;color:var(--ink-2);margin-top:16px;max-width:62ch}
+.land-h2{font-size:20px;font-weight:700;margin:34px 0 14px}
+.land-stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:30px}
+.land-stage{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:15px 16px;box-shadow:var(--raise);display:flex;flex-direction:column;gap:5px}
+.land-stage .ls-n{width:24px;height:24px;border-radius:50%;background:var(--brand);color:var(--on-brand);
+  display:grid;place-items:center;font-size:12px;font-weight:700;font-family:var(--fmono)}
+.land-stage b{font-size:15px}
+.land-stage span:last-child{font-size:13px;color:var(--ink-3);line-height:1.45}
+.land-roles{display:flex;flex-direction:column;gap:10px}
+.land-role{display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;align-items:start;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:15px 17px;box-shadow:var(--raise)}
+.land-role .lr-ic{width:38px;height:38px;border-radius:9px;background:var(--brand-soft);color:var(--brand-ink);
+  display:grid;place-items:center;font-size:16px}
+.land-role b{font-size:15.5px;display:block}
+.land-role p{font-size:14px;color:var(--ink-2);margin-top:3px;line-height:1.5}
+.land-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:32px}
+.land-foot{font-size:12.5px;color:var(--ink-3);margin-top:22px;border-top:1px solid var(--line);padding-top:16px}
+
 @media (max-width:880px){
   .app{grid-template-columns:1fr}
-  .rail{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
-  .roles{flex-direction:row;flex-wrap:wrap}
-  .roletab{flex:1;min-width:170px}
-  nav{flex-direction:row;flex-wrap:wrap}
-  nav button{width:auto;grid-template-columns:auto auto auto}
-  .content{padding:20px 18px 140px}
-  .crumb{padding:12px 18px}
+  /* The rail becomes a compact scrolling header. It must NOT be sticky here:
+     at this width it is tall enough that a sticky version pushes every screen's
+     content off the phone entirely. */
+  .rail{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);
+        padding:11px 14px 12px;gap:8px}
+  .rail .grouplab{display:none}
+  .roles{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
+  .roletab{flex:0 0 auto;min-width:0;padding:7px 11px;min-height:42px}
+  .roletab small{display:none}
+  nav{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px}
+  nav button{flex:0 0 auto;width:auto;grid-template-columns:auto auto;gap:7px;
+             padding:6px 11px;min-height:38px;font-size:12.5px}
+  .railfoot{margin-top:0;flex-direction:row;gap:8px}
+  .railfoot .btn{flex:1;min-height:38px;font-size:13px;padding:7px 10px}
+  .railfoot .railnote,.railfoot .homelink{display:none}
+  .content{padding:18px 14px 200px}
+  .crumb{padding:11px 14px}
   .applicant{grid-template-columns:minmax(0,1fr)}
   .applicant .sidecol{flex-direction:row;align-items:center;justify-content:flex-start}
   .applicant .sidecol .btn{width:auto}
+  .appitem{grid-template-columns:minmax(0,1fr)}
+  .rightcol{align-items:flex-start;flex-direction:row;flex-wrap:wrap}
   .fun .f{grid-template-columns:minmax(0,1fr);gap:5px}
-  .tourbar .in{grid-template-columns:minmax(0,1fr);gap:10px;padding:14px 18px}
+  .tourbar .in{grid-template-columns:minmax(0,1fr);gap:10px;padding:13px 14px}
+  .mrow{grid-template-columns:auto minmax(0,1fr);row-gap:2px}
+  .mrow .pts{grid-column:2}
+  .deftable{grid-template-columns:minmax(0,1fr);gap:2px 0}
+  .deftable dd{margin-bottom:9px}
+  .land-h1{font-size:27px}
+  .land-lede{font-size:16px}
+  .land-stages{grid-template-columns:minmax(0,1fr)}
+  body.landing .content{padding-top:24px}
+  .land-cta .btn{flex:1;min-width:0}
+}
+
+@media (max-width:560px){
+  /* All three roles must be visible without scrolling: a phone user who cannot
+     see that the other two exist never discovers the point of the prototype. */
+  .roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;gap:5px}
+  .roletab{flex-direction:column;align-items:flex-start;gap:4px;padding:7px 8px;min-height:50px}
+  .roletab .ic{width:20px;height:20px;font-size:11px}
+  .roletab em{font-size:11.5px;line-height:1.2}
+  .railfoot .btn{font-size:12.5px;padding:8px 6px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 

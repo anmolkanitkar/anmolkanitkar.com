@@ -149,6 +149,7 @@ const ROLES = {
 /* ---------------- state ---------------- */
 
 const state = {
+  landing:true,                 // the intro screen a cold visitor lands on
   role:"officer", view:"o1",
   posted:[],                    // every problem the officer publishes, newest first
   applications:[],              // every application the startup files
@@ -161,6 +162,7 @@ const state = {
   applyFor:null,                // challenge id being applied to
   openProblem:null,             // officer: whose applications are being viewed
   chosen:null, reason:"", rejectNote:"", terms:null,
+  rejectedAll:false, extended:false,
   ms:[3,3,1,0], scaled:false,
   bannerOff:false, tour:-1
 };
@@ -243,6 +245,45 @@ function matchPanel(ch, m){
         '<span>Track record: ' + state.profile.pastPilots + ' past public pilots</span>' +
         '<span class="pts">' + m.trackPts + ' / 10</span></div>' +
     '</div></div>';
+}
+
+/* =========================================================
+   LANDING — what a cold visitor sees first
+   ========================================================= */
+
+function landing(){
+  return '<div class="land">' +
+    '<div class="land-eyebrow">Smart India Hackathon · problem statement</div>' +
+    '<h1 class="land-h1">Public procurement a startup can actually win</h1>' +
+    '<p class="land-lede">“A startup-friendly public procurement mechanism that enables government departments to ' +
+      'identify, pilot, procure and scale innovative solutions from eligible startups.”</p>' +
+    '<p class="land-sub">Setu is a working prototype of that mechanism. Everything below is clickable — ' +
+      'what you do in one role changes what the other two see.</p>' +
+
+    '<div class="land-stages">' +
+      [["1","Identify","A department posts a problem, not a specification"],
+       ["2","Pilot","A funded pilot with real users, paid against milestones"],
+       ["3","Procure","A pilot that hits its targets becomes a contract"],
+       ["4","Scale","Proven once, bought by any department without tendering"]]
+      .map(x => '<div class="land-stage"><span class="ls-n">' + x[0] + '</span>' +
+        '<b>' + x[1] + '</b><span>' + x[2] + '</span></div>').join("") +
+    '</div>' +
+
+    '<h2 class="land-h2">Three people use it</h2>' +
+    '<div class="land-roles">' +
+      [["▦","Department Officer","Posts the problem, tracks the pilot, decides whether to scale. Never picks the winner."],
+       ["△","Startup User","Finds problems that suit it, applies with no turnover history or deposit, runs the pilot."],
+       ["◎","Oversight (Evaluator)","Scores applications, approves or rejects with a written reason, sets what success means, checks the process was fair."]]
+      .map(x => '<div class="land-role"><span class="lr-ic">' + x[0] + '</span>' +
+        '<div><b>' + x[1] + '</b><p>' + x[2] + '</p></div></div>').join("") +
+    '</div>' +
+
+    '<div class="land-cta">' +
+      '<button class="btn pri big" type="button" id="landdemo">Take the guided demo · 11 steps</button>' +
+      '<button class="btn big" type="button" id="landenter">Explore on my own</button>' +
+    '</div>' +
+    '<p class="land-foot">Prototype with representative data. No real department, startup or contract is depicted.</p>' +
+  '</div>';
 }
 
 /* =========================================================
@@ -356,6 +397,17 @@ function o3(){
 function o4(){
   const a = chosenApplicant();
   const ready = state.ms.every(s => s === 3);
+  if(state.extended && !state.scaled){
+    return phead("Pilot extended by 90 days",
+      "A pilot may be extended once. The clock is public, so an extension is a decision on the record rather than a way to let something drift.",
+      "Step 4 of 4 · " + CHALLENGE.id) +
+      '<div class="note acc mb-md"><b>New end date: 16 Jan 2027.</b> The startup keeps being paid against the same milestones; no new terms were negotiated.</div>' +
+      '<div class="card"><h2>Why an extension is bounded</h2><ul class="plain">' +
+        '<li><span class="badge b-ok"><i class="dot"></i>Once</span><span class="lead">One extension only. A second requires the oversight cell to sign it off.</span></li>' +
+        '<li><span class="badge b-ok"><i class="dot"></i>Paid</span><span class="lead">The supplier is not asked to work unpaid through the extension.</span></li>' +
+        '<li><span class="badge b-info"><i class="dot"></i>Then</span><span class="lead">At the end you must still record scale, extend-with-approval, or close with a reason.</span></li>' +
+      '</ul><div class="row mt-md"><button class="btn pri" type="button" id="unextend">Decide now instead</button></div></div>';
+  }
   if(state.scaled){
     return phead("Scaled to full deployment", "The pilot was the evidence. No new tender.",
       "Step 4 of 4 · contract C-2026-0412") +
@@ -380,7 +432,7 @@ function o4(){
       ? '<div class="card"><div class="row"><div class="grow"><b>Finance has already agreed.</b>' +
         '<p class="hint-sm">Concurrence received 03 Sep 2026. Yours is the last signature.</p></div>' +
         '<button class="btn pri big" type="button" id="scale">Approve full deployment</button>' +
-        '<button class="btn" type="button">Extend the pilot instead</button></div></div>'
+        '<button class="btn" type="button" id="extend">Extend the pilot instead</button></div></div>'
       : '<div class="note warn"><b>Not yet.</b> Verify all four steps first, under <b>Review pilot progress</b>.</div>');
 }
 
@@ -619,6 +671,17 @@ function e1(){
 }
 
 function e2(){
+  if(state.rejectedAll){
+    return phead("All applications rejected — challenge reopened",
+      "Nothing was quietly shelved. Every applicant was told, and the reason is on the public record.",
+      "Step 2 of 4 · " + CHALLENGE.id) +
+      '<div class="note warn mb-md"><b>Reopened for a fresh window.</b><span class="quote">“' + esc(state.rejectNote) + '”</span></div>' +
+      '<div class="card"><h2>What this triggers</h2><ul class="plain">' +
+        '<li><span class="badge b-ok"><i class="dot"></i>Done</span><span class="lead">All six applicants notified, each with their own score breakdown.</span></li>' +
+        '<li><span class="badge b-ok"><i class="dot"></i>Done</span><span class="lead">The reason is published, and any applicant may contest it for 15 days.</span></li>' +
+        '<li><span class="badge b-info"><i class="dot"></i>Next</span><span class="lead">The department must revise the problem or the ceiling before reopening — a re-run with identical terms is blocked.</span></li>' +
+      '</ul><div class="row mt-md"><button class="btn" type="button" id="unreject">Undo — go back to the decision</button></div></div>';
+  }
   if(state.chosen){
     const a = chosenApplicant();
     return phead("Decision recorded", "Every applicant got their score and the reason. Contestable for 15 days.",
@@ -642,7 +705,8 @@ function e2(){
     field("What to tell everyone else", "Their score breakdown is attached automatically.",
       '<textarea id="d-reject">Not selected this time. Two pilot slots were funded and the ranking was decided on field-readiness under weak network conditions. Your full score breakdown is attached, and you may contest this within 15 days.</textarea>') +
     '<div class="row"><button class="btn pri big" type="button" id="approve">Approve and notify everyone</button>' +
-    '<button class="btn danger" type="button">Reject all and re-run</button></div></div>' +
+    '<button class="btn danger" type="button" id="rejectall">Reject all and re-run</button></div>' +
+    '<p class="hint-sm">Rejecting all reopens the challenge. It needs the same written reason — no silent cancellations.</p></div>' +
     handoff("Next you set what success means for the pilot.");
 }
 
@@ -758,7 +822,7 @@ function renderTour(){
 }
 function gotoTour(i){
   if(i < 0 || i >= TOUR.length){ state.tour = -1; render(); return; }
-  state.tour = i; state.role = TOUR[i].role; state.view = TOUR[i].view;
+  state.tour = i; state.landing = false; state.role = TOUR[i].role; state.view = TOUR[i].view;
   state.detail = null; state.applyFor = null;
   render();
 }
@@ -785,6 +849,13 @@ function pending(role){
 }
 
 function render(){
+  document.body.classList.toggle("landing", state.landing);
+  if(state.landing){
+    document.getElementById("view").innerHTML = landing();
+    document.getElementById("tourbar").hidden = true;
+    window.scrollTo({top:0, behavior:"instant"});
+    return;
+  }
   const r = ROLES[state.role];
   if(!r.nav.some(n => n.id === state.view)) state.view = r.nav[0].id;
   const done = doneSteps(state.role), pend = pending(state.role);
@@ -811,6 +882,10 @@ function render(){
       '<button class="btn pri" type="button" id="bannerstart">Start guided demo</button>' +
       '<button class="btn ghost" type="button" id="bannerhide">No thanks</button></div>'
     : "";
+
+  /* The step strip scrolls sideways on a phone; keep the active step in view. */
+  const cur = document.querySelector('#nav button[aria-current="page"]');
+  if(cur && cur.scrollIntoView) cur.scrollIntoView({block:"nearest", inline:"nearest"});
 
   document.getElementById("view").innerHTML = banner + VIEWS[state.view]();
   applyBars(document.body);
@@ -870,7 +945,9 @@ document.addEventListener("click", e => {
   if(openP){ state.openProblem = openP.dataset.open || null; return render(); }
   const ver = t.closest("[data-ms]");
   if(ver){ state.ms[Number(ver.dataset.ms)] = 3; const nx = state.ms.indexOf(0); if(nx >= 0) state.ms[nx] = 1; return render(); }
-  if(t.id === "scale"){ state.scaled = true; return render(); }
+  if(t.id === "scale"){ state.scaled = true; state.extended = false; return render(); }
+  if(t.id === "extend"){ state.extended = true; return render(); }
+  if(t.id === "unextend"){ state.extended = false; return render(); }
 
   /* startup */
   const det = t.closest("[data-detail]");
@@ -904,6 +981,13 @@ document.addEventListener("click", e => {
     return render();
   }
   if(t.id === "undo"){ state.chosen = null; state.reason = ""; state.terms = null; return render(); }
+  if(t.id === "rejectall"){
+    const why = val("d-reject");
+    if(!why){ const el = document.getElementById("d-reject"); if(el) el.focus(); return; }
+    state.rejectedAll = true; state.rejectNote = why; state.chosen = null; state.terms = null;
+    return render();
+  }
+  if(t.id === "unreject"){ state.rejectedAll = false; return render(); }
   if(t.id === "retterms"){ state.terms = null; return render(); }
   if(t.id === "setterms"){
     state.terms = {
@@ -915,6 +999,10 @@ document.addEventListener("click", e => {
     };
     return render();
   }
+
+  /* landing */
+  if(t.id === "landdemo"){ state.landing = false; state.bannerOff = true; return gotoTour(0); }
+  if(t.id === "landenter"){ state.landing = false; state.bannerOff = true; return render(); }
 
   /* chrome */
   if(t.id === "tourstart" || t.id === "bannerstart") return gotoTour(0);
