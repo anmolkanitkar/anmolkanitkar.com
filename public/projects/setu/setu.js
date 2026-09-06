@@ -19,6 +19,29 @@ const CAPS = [
 ];
 const SECTORS = ["Urban services", "Water", "Transport", "Health", "Agriculture", "Citizen services"];
 
+/* A department officer should not have to think in capability tags — that is a
+   supplier's vocabulary, not a buyer's. So the officer writes the problem in
+   plain words and Setu reads the requirement out of it. Inferred, then shown
+   back read-only, so it is visible without being another decision to make. */
+const CAP_HINTS = {
+  "Field sensors":        ["sensor","gauge","depth","water","flood","level","reading","measure","monitor"],
+  "IoT hardware":         ["pump","valve","device","hardware","install","fitted","equipment","station"],
+  "Prediction models":    ["predict","forecast","ahead","early","warn","before it","risk of"],
+  "Computer vision":      ["camera","cctv","image","video","visual","pothole","crowd","footage"],
+  "Speech & language":    ["call","voice","language","speech","helpline","translate","transcri"],
+  "Satellite data":       ["satellite","remote sensing","aerial","imagery"],
+  "Offline / low-bandwidth":["offline","2g","low bandwidth","weak network","patchy","rural"],
+  "Control-room software":["control room","dispatch","operator","crew","complaint","route a team"],
+  "Mobile app":           ["mobile","phone","app","field staff","on the ground"],
+  "Data dashboards":      ["dashboard","ranked list","weekly list","report","records","register"],
+  "Medical devices":      ["patient","clinical","blood","health centre","phc","screening"],
+  "Municipal deployments":["ward","municipal","city","street","civic","zone","corporation"]
+};
+function inferNeeds(text){
+  const t = (text || "").toLowerCase();
+  return CAPS.filter(c => (CAP_HINTS[c] || []).some(k => t.includes(k))).slice(0, 5);
+}
+
 /* ---------------- seed data ---------------- */
 
 const DB = {
@@ -134,7 +157,6 @@ const state = {
     sectors:["Urban services","Water"],
     team:11, priceMin:120, priceMax:190, pastPilots:2
   },
-  draftCaps:null,               // capability checkboxes on the post form
   detail:null,                  // challenge id being read in full
   applyFor:null,                // challenge id being applied to
   openProblem:null,             // officer: whose applications are being viewed
@@ -228,19 +250,20 @@ function matchPanel(ch, m){
    ========================================================= */
 
 function o1(){
-  const caps = state.draftCaps || ["Field sensors","Prediction models","Offline / low-bandwidth","Municipal deployments"];
   const listed = state.posted.length
     ? '<div class="card mb-md"><h2>Problems you have posted</h2>' +
       '<div class="sub">' + state.posted.length + ' live · every startup can see all of them</div><ul class="plain">' +
       state.posted.map(p => '<li><span class="lead"><b>' + esc(p.title) + '</b><br>' +
-        '<span class="note-sm">' + p.id + ' · ' + money(p.budget) + ' · closes ' + esc(p.deadline) + '</span></span>' +
+        '<span class="note-sm">' + p.id + ' · ' + money(p.budget) + ' · closes ' + esc(p.deadline) + '</span>' +
+        ((p.needs || []).length ? '<div class="caplist">' + p.needs.map(n =>
+          '<span class="tag">' + n + '</span>').join("") + '</div>' : "") + '</span>' +
         '<span class="badge b-ok"><i class="dot"></i>Live</span></li>').join("") + '</ul></div>'
     : "";
 
   return phead("Post a problem",
     "Say what result you need. Leave how to get there open.",
     "Step 1 of 4 · Post a problem") + listed +
-    '<div class="card"><h2>New challenge</h2><div class="sub">Posting another does not remove the ones already up</div>' +
+    '<div class="card"><h2>New challenge</h2><div class="sub">Five fields, all in plain words. Posting another does not remove the ones already up.</div>' +
     field("What is the problem?", "",
       '<input id="f-title" type="text" value="Cut waterlogging complaints in the eastern wards">') +
     field("What result would count as solved?", "Give a number. This becomes the pilot target.",
@@ -254,9 +277,8 @@ function o1(){
       field("Which sector?", "", '<select id="f-sector">' + SECTORS.map(x =>
         '<option' + (x === "Urban services" ? " selected" : "") + '>' + x + '</option>').join("") + '</select>') +
     '</div>' +
-    field("What will solving it take?", "Tick what the work needs. This is what startups are matched against — it is the difference between a startup seeing a number and seeing a reason.",
-      capPicker(caps, "data-cap")) +
-    '<div class="note mt-md mb-md"><b>Not asked for:</b> minimum turnover · three years of past supply · earnest money deposit.</div>' +
+    '<div class="note mb-md"><b>You do not have to describe the technology.</b> Setu reads the requirement out of what you wrote above and matches startups against it — you will see what it read once the challenge is live.</div>' +
+    '<div class="note mb-md"><b>Not asked for:</b> minimum turnover · three years of past supply · earnest money deposit.</div>' +
     '<button class="btn pri big" type="button" id="publish">Publish this challenge</button></div>';
 }
 
@@ -697,7 +719,7 @@ function e4(){
 
 const TOUR = [
   {role:"officer", view:"o1", who:"Department Officer", title:"Post the problem, not the product",
-   text:"Write the result needed and tick what solving it takes. Those ticks are what startups get matched against.", focus:"#publish"},
+   text:"Plain words only — no technology, no specification. Setu reads the requirement out of it and matches startups against that.", focus:"#publish"},
   {role:"startup", view:"s0", who:"Startup User", title:"The startup describes what it can do",
    text:"One profile, filed once. Every match score on the next screen is worked out from these ticks."},
   {role:"startup", view:"s1", who:"Startup User", title:"Which problem suits me?",
@@ -810,14 +832,7 @@ document.addEventListener("click", e => {
   if(g){ const [rr,vv] = g.dataset.goto.split(":"); state.role = rr; state.view = vv;
          state.detail = null; state.applyFor = null; return render(); }
 
-  /* capability toggles */
-  const cap = t.closest("[data-cap]");
-  if(cap){
-    const c = cap.dataset.cap;
-    const cur = state.draftCaps || ["Field sensors","Prediction models","Offline / low-bandwidth","Municipal deployments"];
-    state.draftCaps = cur.includes(c) ? cur.filter(x => x !== c) : cur.concat([c]);
-    return render();
-  }
+  /* capability toggles (startup profile only) */
   const mycap = t.closest("[data-mycap]");
   if(mycap){
     const c = mycap.dataset.mycap;
@@ -847,9 +862,8 @@ document.addEventListener("click", e => {
       deadline: val("f-deadline") || "10 Oct 2026",
       closes: val("f-deadline") || "10 Oct 2026",
       users: val("f-users") || "",
-      needs: (state.draftCaps || ["Field sensors","Prediction models","Offline / low-bandwidth","Municipal deployments"]).slice()
+      needs: inferNeeds([val("f-title"), val("f-outcome"), val("f-users")].join(" "))
     });
-    state.draftCaps = null;
     return render();
   }
   const openP = t.closest("[data-open]");
