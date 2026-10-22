@@ -1,0 +1,15 @@
+{
+  "name": "Survibe — onboarding prototype",
+  "short_name": "Survibe",
+  "description": "An interactive iPad onboarding prototype for Survibe, a piano learning app.",
+  "start_url": "/projects/survibe/",
+  "scope": "/projects/survibe/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0c0c0f",
+  "theme_color": "#0c0c0f",
+  "icons": [
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

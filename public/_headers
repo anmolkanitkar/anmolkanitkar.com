@@ -54,3 +54,17 @@
 /projects/setu/setu-sih-2026.pdf
   Cache-Control: public, max-age=86400
   X-Robots-Tag: index, follow
+/projects/survibe/
+  Cache-Control: public, max-age=0, must-revalidate
+/projects/survibe/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+/projects/survibe/survibe.css
+  Cache-Control: public, max-age=3600
+/projects/survibe/survibe.js
+  Cache-Control: public, max-age=3600
+# Read by iPadOS when the prototype is added to the Home Screen. Short-lived so a
+# changed icon or name is picked up without a rename.
+/projects/survibe/manifest.webmanifest
+  Cache-Control: public, max-age=3600
+/projects/survibe/icon-*
+  Cache-Control: public, max-age=86400

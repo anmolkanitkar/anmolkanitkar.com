@@ -54,7 +54,9 @@
       ],
       "links": {
         "live": "https://survibe.in",
-        "source": null
+        "source": null,
+        "doc": "/projects/survibe/",
+        "docLabel": "iPad onboarding prototype"
       },
       "repo": null,
       "stats": {

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- viewport-fit=cover lets the app run under the status bar and home
+       indicator when added to the Home Screen; the CSS pads with
+       env(safe-area-inset-*) so nothing ends up underneath them. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>Survibe — iPad onboarding prototype</title>
+  <meta name="description" content="An interactive iPad onboarding prototype for Survibe, a piano learning app: a welcome, six quick questions, a personalised plan, then account creation, log in or guest access.">
+  <link rel="canonical" href="https://anmolkanitkar.com/projects/survibe/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://anmolkanitkar.com/projects/survibe/">
+  <meta property="og:title" content="Survibe — iPad onboarding prototype">
+  <meta property="og:description" content="An interactive iPad onboarding prototype for Survibe, a piano learning app.">
+
+  <meta name="theme-color" content="#0c0c0f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Survibe">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230c0c0f'/%3E%3Crect x='5' y='8' width='5' height='16' rx='1.5' fill='%23f4efe6'/%3E%3Crect x='12' y='8' width='5' height='16' rx='1.5' fill='%23f4efe6'/%3E%3Crect x='19' y='8' width='5' height='16' rx='1.5' fill='%23e8b44a'/%3E%3Crect x='26' y='8' width='2' height='16' rx='1' fill='%23f4efe6' fill-opacity='.45'/%3E%3C/svg%3E">
+
+  <!--
+    Same rules as every page on this site: no inline <style>, no inline
+    <script>, no style="" attributes, no third-party origin (see
+    public/_headers). Runtime values go through the CSSOM instead.
+
+    The ?v= markers are content hashes (first 8 hex of the md5). Update them
+    whenever survibe.css or survibe.js changes, or visitors keep the old file
+    for up to an hour.
+  -->
+  <link rel="stylesheet" href="survibe.css?v=ad16fbc6">
+  <script src="survibe.js?v=f85d5df2" defer></script>
+</head>
+<body>
+
+<div class="stage">
+  <div class="devbar" id="devbar" hidden>
+    <span class="logo"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="7" width="5" height="18" rx="1.6"/><rect x="11.5" y="7" width="5" height="18" rx="1.6"/><rect x="19" y="7" width="5" height="18" rx="1.6" class="acc"/><rect x="26.5" y="7" width="2.5" height="18" rx="1.2" class="dim"/></svg><b>Survibe</b></span>
+    <label class="vh" for="devsel">Device</label>
+    <select id="devsel"></select>
+    <button type="button" id="rotate">Rotate</button>
+    <span id="devsize"></span>
+    <button type="button" id="devproto">Prototype controls</button>
+  </div>
+
+  <div id="holder">
+    <div id="device">
+      <div class="app" id="app">
+        <div class="screens" id="screens"></div>
+        <div class="layer" id="layer"></div>
+        <div class="toast" id="toast" role="status"></div>
+        <p class="vh" id="announce" aria-live="polite"></p>
+        <button type="button" id="protobtn" aria-label="Prototype controls"><svg viewBox="0 0 4 18" aria-hidden="true"><circle cx="2" cy="2" r="1.6"/><circle cx="2" cy="9" r="1.6"/><circle cx="2" cy="16" r="1.6"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <p class="devnote" id="devnote">You're seeing an iPad-sized preview. On an iPad, open this page in Safari and it fills the screen; Share → Add to Home Screen runs it full screen like an app. Sound is on: tap anything with keys. · <a href="/">anmolkanitkar.com</a></p>
+</div>
+
+</body>
+</html>

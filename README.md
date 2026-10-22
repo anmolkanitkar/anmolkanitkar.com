@@ -20,6 +20,7 @@ anmolkanitkar.com/
 │   ├── js/main.js
 │   ├── assets/img/
 │   ├── projects/setu/           ← a project page + its deck (see "Project pages")
+│   ├── projects/survibe/        ← the Survibe iPad onboarding prototype
 │   ├── robots.txt
 │   ├── sitemap.xml
 │   └── _headers                 ← Cloudflare Pages security + cache headers
@@ -89,6 +90,7 @@ under `public/projects/<slug>/` and are linked from the grid via `links.live`.
 |---|---|
 | Setu — startup-friendly public procurement (Smart India Hackathon) | `/projects/setu/` |
 | Setu submission deck | `/projects/setu/setu-sih-2026.pdf` |
+| Survibe — iPad onboarding prototype | `/projects/survibe/` |
 
 A page may ship a companion document. The deck above is generated from a
 PowerPoint source that is **not** in this repo — regenerate it with
@@ -114,6 +116,37 @@ rule to remember, because nothing warns you until it is deployed:
 
 Add a `_headers` block for any new page — the `/css/*` and `/js/*` cache rules are
 top-level globs and will not reach `/projects/<slug>/`.
+
+### The Survibe onboarding prototype
+
+`/projects/survibe/` is an interactive onboarding flow for the Survibe iPad app:
+welcome → six questions (instrument, level, a "let's hear your piano" check,
+goals, music, routine) → a plan built from the answers → save it with an
+account, carry on as a guest, or log straight in as a returning player.
+
+- **Testing it.** On an iPad, open the page in Safari; it fills the screen in
+  either orientation. Share → Add to Home Screen runs it full screen with its
+  own icon (`manifest.webmanifest`, `icon-180.png`, `icon-512.png`). On a
+  desktop it sits in an iPad-sized frame with a device picker and a rotate
+  button; `?frame=0` or `?frame=1` overrides that guess. The small tab on the
+  right edge (or *Prototype controls* in the desktop bar) jumps to any screen
+  and restarts.
+- **Nothing reaches a server.** Sign-up, log in, password reset, Apple and
+  Google sign-in, and the microphone and notification prompts are simulated
+  and labelled as such. Accounts live in the browser's `localStorage`, so one
+  made in the prototype can be logged back into on the same device. Demo
+  account: `riya@survibe.in` / `piano123`.
+- **The microphone is never used.** `Permissions-Policy` blocks it site-wide and
+  that stays as it is: the on-screen keys stand in for the piano.
+- **Layouts are container queries on `.app`**, not media queries, which is
+  what lets one stylesheet serve a real iPad and the desktop frame.
+- **Cache busting.** `index.html` references `survibe.css?v=…` and
+  `survibe.js?v=…`, the first 8 hex digits of each file's md5. After editing
+  either, update the marker:
+
+  ```bash
+  md5 -q public/projects/survibe/survibe.js | cut -c1-8
+  ```
 
 ### Checking a page against the real CSP before you deploy
 
