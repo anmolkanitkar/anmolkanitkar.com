@@ -54,3 +54,9 @@
 /projects/setu/setu-sih-2026.pdf
   Cache-Control: public, max-age=86400
   X-Robots-Tag: index, follow
+/projects/survibe/privacy/
+  Cache-Control: public, max-age=0, must-revalidate
+/projects/survibe/privacy/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+/projects/survibe/privacy/privacy.css
+  Cache-Control: public, max-age=3600
